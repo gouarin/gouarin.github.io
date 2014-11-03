@@ -1,0 +1,87 @@
+\documentclass[12pt]{article}
+\usepackage{etex} % pour charger plus de packages !!!
+
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amstext}
+\usepackage{amsbsy}
+\usepackage{amsmath}
+\usepackage{amsopn}
+\usepackage{euscript}
+\usepackage{mathrsfs}
+\usepackage{fancybox}
+%\usepackage{epsfig}
+%\usepackage{graphicx}
+%\usepackage{caption}
+%\usepackage{subcaption}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{boxedminipage}
+%\usepackage{cancel}
+\usepackage{listings}
+
+
+\usepackage{ae}
+\usepackage{aeguill}
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc} % pour les accents
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\selectlanguage{francais}
+
+%\usepackage{bm}% bold math
+\usepackage{eufrak}
+\usepackage{euscript}
+\usepackage{cancel}
+
+\usepackage{tikz}
+\usetikzlibrary{mindmap, snakes}
+\usepackage{tikz-3dplot}
+
+\begin{document}
+
+\begin{center}
+\begin{tikzpicture}
+\tikzset{
+  model/.style = {draw,rectangle,rounded corners=3pt, black, text 
+width=2.5cm,text centered, text=white},
+  micro/.style = {fill=black!50},
+  macro/.style = {fill=red},
+  meso/.style = {fill=blue},
+  dash/.style = {->,>=stealth', dashed, thick, black!50},
+  plein/.style = {->, very thick, >=stealth', marron},
+  lien/.style = {snake=coil, segment amplitude=5pt,segment length=5pt, blue, 
+thick},
+  scale=0.8,
+  comment/.style = {text width=2.5cm, text=black, execute at begin node=\tiny},
+  etiquette/.style = {draw, fill=yellow!50, midway, execute at begin 
+node=\scriptsize, text width=1.75cm, rounded corners=3pt, text=black},
+  }
+
+\fill[black!10] (-6,-5) -- (-2,-5) -- (-2,4.5) -- (-6,4.5) -- cycle;
+\fill[blue!10] (-2,-5) -- (2,-5) -- (2,4.5) -- (-2,4.5) -- cycle;
+\fill[red!10] (2,-5) -- (6,-5) -- (6,4.5) -- (2,4.5) -- cycle;
+
+\node[model, micro] (Micro)at(-4,1){Modèles \mbox{microscopiques}};
+\node[model, macro] (Macro)at(4,1){Modèles \mbox{macroscopiques}};
+\node[model, meso] (Meso)at(0,-2){Modèles \mbox{mésoscopiques}};
+\node[model, meso] (Scheme) at(0, 0.5){Boltzmann sur réseau};
+\draw[dash] (Micro.90) to[out=90, in=90] (Macro.90);
+\draw[dash] (Micro.270) to[bend right] (Meso.west);
+\draw[plein] (Meso.east) to[bend right]  node[etiquette, right]{Chapman-Enskog 
+$\epsilon\to0$} (Macro.south);
+\draw[plein] (Scheme.north) to[out=45,in=90] node[etiquette, left]{développement 
+de Taylor $\Delta t\to0$}(Macro.130);
+\draw[lien] (Meso.north) -- (Scheme.south);
+
+\node[comment] at (-4,-3.5){\underline{particules individualisées}\\ positions, 
+vitesses};
+\node[comment] at (0,-3.5){\underline{description statistique}\\ fonctions de 
+répartition moyennées};
+\node[comment] at (4,-3.5){\underline{quantités observables}\\ densité, vitesse, 
+température};
+\end{tikzpicture}
+\end{center}
+
+\end{document}
+

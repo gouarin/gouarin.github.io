@@ -1,0 +1,45 @@
+body {
+    font-size: 120%;
+    overflow:hidden;
+}
+
+.rendered_html{
+ font-family:serif;
+ line-height:1.5em;
+ padding-top:7px;
+}
+
+div.highlight#pre {
+    font-size: 20pt;
+}
+
+div.prompt { /* remove In/Out prompt */
+    display: none;
+}
+ 
+div.cell.code_cell { /* area that contains code + output */
+    background: #fff;
+    border: none;
+    border-radius: 10px;
+    padding-top: 1ex;
+}
+.reveal strong {
+    color: blue;
+}
+
+.reveal h1 {
+text-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
+}
+
+.reveal h2 {
+text-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
+}
+
+.reveal h3 {
+text-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* header colours and fonts */
+.rendered_html h1 { color: #444; font-style: bold; font-weight: normal; text-align: center; }
+.rendered_html h2 { color: #443; font-style: italic; font-weight: normal; text-align: center; }
+.rendered_html h3 { color: #444; font-style: italic; font-weight: normal}
