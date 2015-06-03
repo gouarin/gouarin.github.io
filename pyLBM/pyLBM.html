@@ -222,9 +222,8 @@ div.output_prompt {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="pyLBM">pyLBM<a class="anchor-link" href="#pyLBM">&#182;</a></h1><p>&nbsp;</p>
 <center>
-<img src="figures/logo.png" style="width: 10%;" />
+<img src="./figures/logo.png" style="width: 90%;" />
 </center>
 &nbsp;
 <center>
@@ -355,7 +354,7 @@ $D_2Q_9$, $D_3Q_{13}$, $D_3Q_{15}$, $D_3Q_{19}$ et $D_3Q_{27}$
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
 <li>code écrit en Python</li>
-<li>code de recherche et de production</li>
+<li>code de recherche (et de production)</li>
 <li>pas de schémas prédéfinis (classique + vectoriel)</li>
 <li>flexible</li>
 <li>génération de codes optimisés </li>
@@ -373,7 +372,7 @@ $D_2Q_9$, $D_3Q_{13}$, $D_3Q_{15}$, $D_3Q_{19}$ et $D_3Q_{27}$
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Id&#233;e-g&#233;n&#233;rale">Id&#233;e g&#233;n&#233;rale<a class="anchor-link" href="#Id&#233;e-g&#233;n&#233;rale">&#182;</a></h3><p>On écrit le schéma que l'on souhaite utiliser sous le formalisme de d'Humières.</p>
 $$
-|f(\mathbf{r}_i+e_\alpha \delta t, t + \delta t)\rangle - |f(\mathbf{r}_i, t)\rangle = -M^{-1}\hat{S}\left[|m(\mathbf{r}_i, t)\rangle - |m^{eq}(\mathbf{r}_i, t)\rangle\right]
+f(\mathbf{r}_i+e_\alpha \delta t, t + \delta t) - f(\mathbf{r}_i, t) = -M^{-1}\hat{S}\left[m(\mathbf{r}_i, t) - m^{eq}(\mathbf{r}_i, t)\right]
 $$
 </div>
 </div>
@@ -387,7 +386,7 @@ $$
 <h3 id="Informations-&#224;-fournir">Informations &#224; fournir<a class="anchor-link" href="#Informations-&#224;-fournir">&#182;</a></h3><ul>
 <li>les vitesses,</li>
 <li>les moments conservés,</li>
-<li>les polynômes permettant de construire $M^{-1}$,</li>
+<li>les polynômes qui permettent d’écrire le changement de base qui diagonalise l’opérateur de relaxation,</li>
 <li>les équilibres,</li>
 <li>la diagonale de la matrice de collision $\hat{S}$.</li>
 </ul>
@@ -1045,7 +1044,8 @@ YII=
 </div>
 </div>
 
-</div>
+</div></section><section>
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[15]:</div>
@@ -4179,7 +4179,7 @@ invM = [Matrix([
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="k">def</span> <span class="nf">bc_up</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">scheme</span><span class="p">):</span>
-    <span class="n">m</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.</span>
+    <span class="n">m</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.</span>
     <span class="n">m</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">driven_velocity</span>
     <span class="n">m</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.</span>
     <span class="n">scheme</span><span class="o">.</span><span class="n">equilibrium</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
@@ -4617,9 +4617,7 @@ invM = [Matrix([
 </center>
 </div>
 </div>
-</div></section>
-    </section><section>
-    <section>
+</div><div style=display:none>
     
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -4630,6 +4628,8 @@ invM = [Matrix([
 </div>
 </div>
 </div>
+    </div><div style=display:none>
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
@@ -4642,7 +4642,8 @@ invM = [Matrix([
 </div>
 </div>
 
-</div></section>
+</div>
+    </div></section>
     </section><section>
     <section>
     
@@ -4659,8 +4660,9 @@ invM = [Matrix([
 </div></li>
 </ul>
 <h4 id="R&#233;flexions">R&#233;flexions<a class="anchor-link" href="#R&#233;flexions">&#182;</a></h4><ul>
+<li>stockage et phase de transport</li>
 <li>raffinement automatique</li>
-<li>multiphase</li>
+<li>multiphasique</li>
 <li>surface libre</li>
 <li>...</li>
 </ul>
@@ -4678,7 +4680,7 @@ invM = [Matrix([
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Questions-?">Questions ?<a class="anchor-link" href="#Questions-?">&#182;</a></h2><p>&nbsp;</p>
 <center>
-<img src="figures/logo.png" style="width: 10%;" />
+<img src="figures/logo.png" style="width: 50%;" />
 </center>
 </div>
 </div>
