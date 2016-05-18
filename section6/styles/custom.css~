@@ -1,0 +1,36 @@
+<link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lora:400,400italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+
+<style>
+
+div.text_cell_render{font-family: "Open Sans", sans-serif;font-weight: normal; line-height:normal;}
+/* header colours and fonts */
+.rendered_html h1 { color: #9A3334; font-family: Oswald, sans-serif; font-weight: normal; text-align: center; }
+.rendered_html h2 { color: #9A3334; font-family: Lora, sans-serif; font-style: italic; font-weight: normal; text-align: center; }
+.rendered_html h3 { color: #9A3334; font-family: Lora, sans-serif; font-weight: normal; font-style: italic;}
+
+div.prompt {
+    display: None;
+}
+
+/* center the images */
+.ui-wrapper {
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* center the images */
+.video {
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.rendered_html img {
+    margin-top: 0em;
+}
+
+/*.reveal h1 {
+    text-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
+}*/
+</style>
