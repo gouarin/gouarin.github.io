@@ -1,0 +1,38 @@
+---
+import '@fontsource-variable/bricolage-grotesque/standard.css';
+import '../styles/global.css';
+import { assetHref, homeHref } from '../i18n';
+import { profile } from '../data/profile';
+
+const fullName = `${profile.givenName} ${profile.familyName}`;
+const fr = homeHref('fr');
+const en = homeHref('en');
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullName}</title>
+    <link rel="alternate" hreflang="fr" href={new URL(fr, Astro.site)} />
+    <link rel="alternate" hreflang="en" href={new URL(en, Astro.site)} />
+    <link rel="alternate" hreflang="x-default" href={new URL(en, Astro.site)} />
+    <link rel="icon" href={assetHref('favicon.svg')} type="image/svg+xml" />
+    <script is:inline define:vars={{ fr, en }}>
+      const prefersFrench = (navigator.languages || [navigator.language]).some((l) => /^fr\b/i.test(l));
+      location.replace(prefersFrench ? fr : en);
+    </script>
+  </head>
+  <body>
+    <main class="wrap topbar">
+      <span class="wordmark">{fullName}</span>
+      <nav>
+        <ul>
+          <li><a class="lang" href={fr} hreflang="fr" lang="fr">Français</a></li>
+          <li><a class="lang" href={en} hreflang="en" lang="en">English</a></li>
+        </ul>
+      </nav>
+    </main>
+  </body>
+</html>

@@ -6,3 +6,5 @@ impeccable/
 .impeccable/config.local.json
 .impeccable/review/
 .DS_Store
+cv/build/
+public/cv/

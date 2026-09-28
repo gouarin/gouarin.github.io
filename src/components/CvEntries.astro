@@ -1,0 +1,48 @@
+---
+import type { Lang } from '../i18n';
+import { tr, type Entry } from '../lib/cv';
+
+interface Props {
+  id: string;
+  title: string;
+  entries: Entry[];
+  lang: Lang;
+}
+
+const { id, title, entries, lang } = Astro.props;
+
+// Project entries keep their repository URL in `location`.
+const isUrl = (s: string) => /^https?:\/\//.test(s);
+---
+
+<section class="cv-section" aria-labelledby={`cv-${id}`}>
+  <h2 id={`cv-${id}`}>{title}</h2>
+  <ol class="cv-rows">
+    {
+      entries.map((e) => {
+        const where = tr(e.location, lang);
+        const url = isUrl(where);
+        return (
+          <li class="cv-row">
+            <p class="cv-when">{tr(e.dates, lang)}</p>
+            <div>
+              <h3>{url ? <a href={where}>{tr(e.org, lang)}</a> : tr(e.org, lang)}</h3>
+              <p class="cv-sub">
+                {tr(e.position, lang)}
+                {url ? <span class="cv-url"> · {where.replace(/^https?:\/\//, '')}</span> : <> · {where}</>}
+              </p>
+              {e.paragraph ? <p class="cv-para">{tr(e.paragraph, lang)}</p> : null}
+              {e.items?.length ? (
+                <ul class="cv-items">
+                  {e.items.map((i) => (
+                    <li>{tr(i, lang)}</li>
+                  ))}
+                </ul>
+              ) : null}
+            </div>
+          </li>
+        );
+      })
+    }
+  </ol>
+</section>

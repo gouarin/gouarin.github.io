@@ -1,0 +1,443 @@
+{
+  "source": "OpenAlex",
+  "authorIds": [
+    "A5021413912",
+    "A5071779736"
+  ],
+  "fetchedAt": "2026-09-28",
+  "publications": [
+    {
+      "id": "W7130813236",
+      "title": "samurai/ponio: two complementary software libraries for the efficient implementation of adaptive space/time numerical schemes",
+      "year": 2026,
+      "type": "report",
+      "venue": "HAL",
+      "authors": [
+        {
+          "name": "Sébastien Dubois",
+          "self": false
+        },
+        {
+          "name": "Loïc Gouarin",
+          "self": true
+        },
+        {
+          "name": "Alexandre Hoffmann",
+          "self": false
+        },
+        {
+          "name": "Josselin Massot",
+          "self": false
+        },
+        {
+          "name": "Marc Massot",
+          "self": false
+        },
+        {
+          "name": "Pierre Matalon",
+          "self": false
+        },
+        {
+          "name": "Laurent Séries",
+          "self": false
+        }
+      ],
+      "doi": null,
+      "open": "https://ntrs.nasa.gov/citations/20260002490"
+    },
+    {
+      "id": "W4414888142",
+      "title": "High Performance Parallel Solvers for the time-harmonic Maxwell Equations",
+      "year": 2025,
+      "type": "preprint",
+      "venue": "arXiv",
+      "authors": [
+        {
+          "name": "Élise Fressart",
+          "self": false
+        },
+        {
+          "name": "Sébastien Dubois",
+          "self": false
+        },
+        {
+          "name": "Loïc Gouarin",
+          "self": true
+        },
+        {
+          "name": "Marc Massot",
+          "self": false
+        },
+        {
+          "name": "Michel Nowak",
+          "self": false
+        },
+        {
+          "name": "Nicole Spillane",
+          "self": false
+        }
+      ],
+      "doi": "https://doi.org/10.48550/arxiv.2507.13066",
+      "open": "https://arxiv.org/pdf/2507.13066"
+    },
+    {
+      "id": "W4404488209",
+      "title": "A new modeling approach of Myxococcus xanthus bacteria using polarity-based reversals",
+      "year": 2024,
+      "type": "article",
+      "venue": "ESAIM Proceedings and Surveys",
+      "authors": [
+        {
+          "name": "Hélène Bloch",
+          "self": false
+        },
+        {
+          "name": "Vincent Calvez",
+          "self": false
+        },
+        {
+          "name": "Benoît Gaudeul",
+          "self": false
+        },
+        {
+          "name": "Loïc Gouarin",
+          "self": true
+        },
+        {
+          "name": "Aline Lefebvre-Lepot",
+          "self": false
+        },
+        {
+          "name": "Tâm Mignot",
+          "self": false
+        },
+        {
+          "name": "Michèle Romanos",
+          "self": false
+        },
+        {
+          "name": "Jean-Baptiste Saulnier",
+          "self": false
+        }
+      ],
+      "doi": "https://doi.org/10.1051/proc/202477025",
+      "open": "http://dx.doi.org/10.1051/proc/202477025"
+    },
+    {
+      "id": "W3176663821",
+      "title": "Fully algebraic domain decomposition preconditioners with adaptive spectral bounds",
+      "year": 2024,
+      "type": "article",
+      "venue": "ETNA - Electronic Transactions on Numerical Analysis",
+      "authors": [
+        {
+          "name": "Loïc Gouarin",
+          "self": true
+        },
+        {
+          "name": "Nicole Spillane",
+          "self": false
+        }
+      ],
+      "doi": "https://doi.org/10.1553/etna_vol60s169",
+      "open": "https://epub.oeaw.ac.at/0xc1aa5576_0x003efa03.pdf"
+    },
+    {
+      "id": "W3165871785",
+      "title": "Does the multiresolution lattice Boltzmann method allow to deal with waves passing through mesh jumps?",
+      "year": 2022,
+      "type": "article",
+      "venue": "Comptes Rendus Mathématique",
+      "authors": [
+        {
+          "name": "Thomas Bellotti",
+          "self": false
+        },
+        {
+          "name": "Loïc Gouarin",
+          "self": true
+        },
+        {
+          "name": "Benjamin Graille",
+          "self": false
+        },
+        {
+          "name": "Marc Massot",
+          "self": false
+        }
+      ],
+      "doi": "https://doi.org/10.5802/crmath.319",
+      "open": "https://comptes-rendus.academie-sciences.fr/mathematique/item/10.5802/crmath.319.pdf"
+    },
+    {
+      "id": "W3164217860",
+      "title": "High accuracy analysis of adaptive multiresolution-based lattice Boltzmann schemes via the equivalent equations",
+      "year": 2022,
+      "type": "article",
+      "venue": "SMAI Journal of Computational Mathematics",
+      "authors": [
+        {
+          "name": "Thomas Bellotti",
+          "self": false
+        },
+        {
+          "name": "Loïc Gouarin",
+          "self": true
+        },
+        {
+          "name": "Benjamin Graille",
+          "self": false
+        },
+        {
+          "name": "Marc Massot",
+          "self": false
+        }
+      ],
+      "doi": "https://doi.org/10.5802/smai-jcm.83",
+      "open": "https://smai-jcm.centre-mersenne.org/item/10.5802/smai-jcm.83.pdf"
+    },
+    {
+      "id": "W3135828167",
+      "title": "Multidimensional fully adaptive lattice Boltzmann methods with error control based on multiresolution analysis",
+      "year": 2022,
+      "type": "article",
+      "venue": "Journal of Computational Physics",
+      "authors": [
+        {
+          "name": "Thomas Bellotti",
+          "self": false
+        },
+        {
+          "name": "Loïc Gouarin",
+          "self": true
+        },
+        {
+          "name": "Benjamin Graille",
+          "self": false
+        },
+        {
+          "name": "Marc Massot",
+          "self": false
+        }
+      ],
+      "doi": "https://doi.org/10.1016/j.jcp.2022.111670",
+      "open": null
+    },
+    {
+      "id": "W3131705380",
+      "title": "Multiresolution-Based Mesh Adaptation and Error Control for Lattice Boltzmann Methods with Applications to Hyperbolic Conservation Laws",
+      "year": 2022,
+      "type": "article",
+      "venue": "SIAM Journal on Scientific Computing",
+      "authors": [
+        {
+          "name": "Thomas Bellotti",
+          "self": false
+        },
+        {
+          "name": "Loïc Gouarin",
+          "self": true
+        },
+        {
+          "name": "Benjamin Graille",
+          "self": false
+        },
+        {
+          "name": "Marc Massot",
+          "self": false
+        }
+      ],
+      "doi": "https://doi.org/10.1137/21m140256x",
+      "open": "https://arxiv.org/pdf/2102.12163"
+    },
+    {
+      "id": "W1701499610",
+      "title": "Optimized Schwarz waveform relaxation for advection reaction diffusion equations in two dimensions",
+      "year": 2015,
+      "type": "article",
+      "venue": "Numerische Mathematik",
+      "authors": [
+        {
+          "name": "Daniel Bennequin",
+          "self": false
+        },
+        {
+          "name": "Martin J. Gander",
+          "self": false
+        },
+        {
+          "name": "Loïc Gouarin",
+          "self": true
+        },
+        {
+          "name": "Laurence Halpern",
+          "self": false
+        }
+      ],
+      "doi": "https://doi.org/10.1007/s00211-015-0784-8",
+      "open": "https://arxiv.org/pdf/1407.1197"
+    },
+    {
+      "id": "W2087299638",
+      "title": "A smooth extension method",
+      "year": 2013,
+      "type": "article",
+      "venue": "Comptes Rendus Mathématique",
+      "authors": [
+        {
+          "name": "Benoît Fabrèges",
+          "self": false
+        },
+        {
+          "name": "Loïc Gouarin",
+          "self": true
+        },
+        {
+          "name": "Bertrand Maury",
+          "self": false
+        }
+      ],
+      "doi": "https://doi.org/10.1016/j.crma.2013.05.011",
+      "open": "https://www.sciencedirect.com/science/article/pii/S1631073X13001167/pdf"
+    },
+    {
+      "id": "W4404750308",
+      "title": "Pourquoi une structuration des mésos-centres en France ?",
+      "year": 2013,
+      "type": "conference-paper",
+      "venue": "HAL",
+      "authors": [
+        {
+          "name": "Loïc Gouarin",
+          "self": true
+        },
+        {
+          "name": "Romaric David",
+          "self": false
+        },
+        {
+          "name": "Laurent Séries",
+          "self": false
+        },
+        {
+          "name": "O. Politano",
+          "self": false
+        },
+        {
+          "name": "Pierre Gay",
+          "self": false
+        }
+      ],
+      "doi": null,
+      "open": "https://hal.science/hal-04805048"
+    },
+    {
+      "id": "W1994125375",
+      "title": "Linear lattice Boltzmann schemes for acoustic: Parameter choices and isotropy properties",
+      "year": 2012,
+      "type": "article",
+      "venue": "Computers & Mathematics with Applications",
+      "authors": [
+        {
+          "name": "Adeline Augier",
+          "self": false
+        },
+        {
+          "name": "François Dubois",
+          "self": false
+        },
+        {
+          "name": "Loïc Gouarin",
+          "self": true
+        },
+        {
+          "name": "Benjamin Graille",
+          "self": false
+        }
+      ],
+      "doi": "https://doi.org/10.1016/j.camwa.2012.06.025",
+      "open": "https://www.sciencedirect.com/science/article/pii/S0898122112004890/pdf"
+    },
+    {
+      "id": "W2246607582",
+      "title": "3D Direct Simulation of a Nonpremixed Hydrogen Flame with Detailed Models",
+      "year": 2010,
+      "type": "book-chapter",
+      "venue": "ERCOFTAC series",
+      "authors": [
+        {
+          "name": "Gordon Fru",
+          "self": false
+        },
+        {
+          "name": "Dominique Thévenin",
+          "self": false
+        },
+        {
+          "name": "C. Zistl",
+          "self": false
+        },
+        {
+          "name": "Gábor Janiga",
+          "self": false
+        },
+        {
+          "name": "L. Gouarin",
+          "self": true
+        },
+        {
+          "name": "A. Laverdant",
+          "self": false
+        }
+      ],
+      "doi": "https://doi.org/10.1007/978-90-481-3652-0_63",
+      "open": null
+    },
+    {
+      "id": "W2287268517",
+      "title": "Optimized Schwarz Waveform Relaxation Methods: A Large Scale Numerical Study",
+      "year": 2010,
+      "type": "book-chapter",
+      "venue": "Lecture notes in computational science and engineering",
+      "authors": [
+        {
+          "name": "Martin J. Gander",
+          "self": false
+        },
+        {
+          "name": "Loïc Gouarin",
+          "self": true
+        },
+        {
+          "name": "Laurence Halpern",
+          "self": false
+        }
+      ],
+      "doi": "https://doi.org/10.1007/978-3-642-11304-8_29",
+      "open": "https://archive-ouverte.unige.ch/unige:171318"
+    },
+    {
+      "id": "W1991693478",
+      "title": "Interaction of a Gaussian acoustic wave with a turbulent non-premixed flame",
+      "year": 2007,
+      "type": "article",
+      "venue": "Combustion Theory and Modelling",
+      "authors": [
+        {
+          "name": "A. Laverdant",
+          "self": false
+        },
+        {
+          "name": "L. Gouarin",
+          "self": true
+        },
+        {
+          "name": "Dominique Thévenin",
+          "self": false
+        }
+      ],
+      "doi": "https://doi.org/10.1080/13647830601056080",
+      "open": null
+    }
+  ]
+}

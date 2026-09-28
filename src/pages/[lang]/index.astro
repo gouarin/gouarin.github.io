@@ -1,0 +1,219 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Sketch from '../../components/Sketch.astro';
+import { cvHref, langs, publicationsHref, ui, type Lang } from '../../i18n';
+import { profile } from '../../data/profile';
+import { software } from '../../data/software';
+import { training } from '../../data/training';
+import { publications } from '../../data/publications';
+import avatar from '../../assets/loic_small.png';
+
+export function getStaticPaths() {
+  return langs.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const t = ui[lang];
+const fullName = `${profile.givenName} ${profile.familyName}`;
+const description = `${fullName}, ${profile.role[lang]}. ${profile.intro[lang]}`;
+
+const papers = [
+  { id: 'cv', title: t.cv, note: t.cvNote, href: cvHref(lang), sketch: 'sheet' as const },
+  {
+    id: 'publications',
+    title: t.publications,
+    note: publications.length ? t.publicationsCount(publications.length) : t.publicationsNote,
+    href: publications.length ? publicationsHref(lang) : null,
+    sketch: 'stack' as const,
+  },
+];
+---
+
+<Base lang={lang} title={fullName} description={description}>
+  <section class="intro wrap" aria-labelledby="name">
+    <div class="portrait">
+      <Image src={avatar} alt={t.portraitAlt} width={320} height={321} densities={[1, 1.5]} loading="eager" fetchpriority="high" />
+    </div>
+    <div class="intro-text">
+      <h1 id="name">
+        <span>{profile.givenName}</span>
+        <span>{profile.familyName}</span>
+      </h1>
+      <p class="role"><mark>{profile.role[lang]}</mark></p>
+      <p class="affiliation">{profile.affiliation[lang]}</p>
+      <p class="lead">{profile.intro[lang]}</p>
+      <ul class="elsewhere">
+        {profile.email ? <li><a href={`mailto:${profile.email}`}>{profile.email}</a></li> : null}
+        {
+          profile.links.map((l) => (
+            <li>
+              <a href={l.url}>{l.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="block wrap" id={t.anchors.software} aria-labelledby="software-title">
+    <header class="block-head">
+      <h2 id="software-title">{t.softwareTitle}</h2>
+      <p>{t.softwareLead}</p>
+    </header>
+    <ul class="projects">
+      {
+        software.map((s) => (
+          <li class="project">
+            <a class="project-link" href={s.repository} tabindex="-1" aria-hidden="true">
+              <div class="plate">
+                <Sketch subject={s.id as 'samurai' | 'scopi' | 'pylbm'} label={`${s.name}: ${s.description ?? ''}`} />
+              </div>
+            </a>
+            <h3 id={`${s.id}-name`}>
+              <a href={s.repository}>{s.name}</a>
+            </h3>
+            {s.description ? (
+              <p class="project-desc" lang="en">
+                {s.description}
+              </p>
+            ) : null}
+            <p class="project-meta">
+              {[s.language, s.license, s.role[lang]].filter(Boolean).join(' · ')}
+            </p>
+            <p class="project-links">
+              <a href={s.repository}>
+                {t.repository}
+                <svg class="out" viewBox="0 0 12 12" aria-hidden="true">
+                  <path d="M3.5 8.5 8.5 3.5M4.5 3.5h4v4" />
+                </svg>
+              </a>
+              {s.documentation ? (
+                <a href={s.documentation}>
+                  {t.documentation}
+                  <svg class="out" viewBox="0 0 12 12" aria-hidden="true">
+                    <path d="M3.5 8.5 8.5 3.5M4.5 3.5h4v4" />
+                  </svg>
+                </a>
+              ) : null}
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="block wrap" id={t.anchors.training} aria-labelledby="training-title">
+    <header class="block-head">
+      <h2 id="training-title">{t.trainingTitle}</h2>
+      <p>{t.trainingLead}</p>
+    </header>
+    {
+      training.length ? (
+        <ul class="projects">
+          {training.map((c) => (
+            <li class="project">
+              <a class="project-link" href={c.materials} tabindex="-1" aria-hidden="true">
+                <div class="plate">
+                  <Sketch subject={c.sketch} />
+                </div>
+              </a>
+              <h3>
+                <a href={c.materials}>{c.title[lang]}</a>
+              </h3>
+              <p class="project-desc">{c.summary[lang]}</p>
+              <p class="project-meta">{c.languages[lang]}</p>
+              <p class="project-links">
+                <a href={c.materials}>
+                  {t.materials}
+                  <svg class="out" viewBox="0 0 12 12" aria-hidden="true">
+                    <path d="M3.5 8.5 8.5 3.5M4.5 3.5h4v4" />
+                  </svg>
+                </a>
+                <a href={c.repository}>
+                  {t.repository}
+                  <svg class="out" viewBox="0 0 12 12" aria-hidden="true">
+                    <path d="M3.5 8.5 8.5 3.5M4.5 3.5h4v4" />
+                  </svg>
+                </a>
+              </p>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div class="pending-row">
+          <span class="disc">
+            <Sketch subject="board" />
+          </span>
+          <p>{t.trainingEmpty}</p>
+        </div>
+      )
+    }
+  </section>
+
+  <section class="block wrap" id={t.anchors.papers} aria-labelledby="papers-title">
+    <header class="block-head">
+      <h2 id="papers-title">{t.papersTitle}</h2>
+      <p>{t.papersLead}</p>
+    </header>
+    <ul class="papers">
+      {
+        papers.map((p) => (
+          <li>
+            {p.href ? (
+              <a class="paper" href={p.href}>
+                <span class="disc">
+                  <Sketch subject={p.sketch} />
+                </span>
+                <span class="paper-text">
+                  <span class="paper-title">{p.title}</span>
+                  <span class="paper-note">{p.note}</span>
+                </span>
+                <svg class="paper-arrow" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 12h13M13 6l6 6-6 6" />
+                </svg>
+              </a>
+            ) : (
+              <div class="paper is-pending">
+                <span class="disc">
+                  <Sketch subject={p.sketch} />
+                </span>
+                <span class="paper-text">
+                  <span class="paper-title">{p.title}</span>
+                  <span class="paper-note">
+                    {p.note} <span class="soon">{t.pending}</span>
+                  </span>
+                </span>
+              </div>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <script>
+    // Each pencil drawing traces itself once when it scrolls into view.
+    const root = document.documentElement;
+    if (root.classList.contains('motion') && 'IntersectionObserver' in window) {
+      const sketches = document.querySelectorAll<SVGSVGElement>('.sketch');
+      sketches.forEach((svg) => {
+        const lines = svg.querySelectorAll<SVGPathElement>('.ln');
+        const step = Math.min(40, 1400 / Math.max(lines.length, 1));
+        lines.forEach((p, i) => p.style.setProperty('--delay', `${Math.round(i * step)}ms`));
+        svg.classList.add('undrawn');
+      });
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (!e.isIntersecting) continue;
+            e.target.classList.add('drawn');
+            io.unobserve(e.target);
+          }
+        },
+        { threshold: 0.35 },
+      );
+      sketches.forEach((s) => io.observe(s));
+    }
+  </script>
+</Base>

@@ -1,0 +1,66 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    # Weekly rebuild so the publication list follows OpenAlex without a manual push.
+    - cron: '17 5 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - id: pages
+        uses: actions/configure-pages@v5
+      - run: npm ci
+      # If OpenAlex is unreachable, the committed publications.json is used unchanged.
+      - name: Refresh publications from OpenAlex
+        run: node scripts/fetch-publications.mjs
+        continue-on-error: true
+      - name: Install XeLaTeX for the CV
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends texlive-xetex texlive-latex-extra texlive-fonts-extra texlive-fonts-recommended texlive-lang-french
+      # Awesome-CV PDFs from src/data/cv.yaml, written to public/cv/ so the build ships them.
+      - name: Build the CV PDFs
+        run: npm run cv
+      - run: npm run build
+        env:
+          SITE_URL: ${{ steps.pages.outputs.origin }}
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}/
+      # Second PDF per language: the CV web page printed by Chromium.
+      - name: Print the CV web page
+        run: |
+          npx playwright install --with-deps chromium
+          npm run cv:web
+        env:
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}/
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

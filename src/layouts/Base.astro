@@ -1,0 +1,69 @@
+---
+import '@fontsource-variable/literata/standard.css';
+import '@fontsource-variable/literata/standard-italic.css';
+import '@fontsource-variable/bricolage-grotesque/standard.css';
+import '../styles/global.css';
+import PencilDefs from '../components/PencilDefs.astro';
+import { assetHref, homeHref, otherLang, ui, type Lang } from '../i18n';
+import { profile } from '../data/profile';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  // Same page in the other language; defaults to the other home page.
+  alternate?: string;
+}
+
+const { lang, title, description } = Astro.props;
+const t = ui[lang];
+const other = otherLang(lang);
+const fullName = `${profile.givenName} ${profile.familyName}`;
+const otherHref = Astro.props.alternate ?? homeHref(other);
+const home = homeHref(lang);
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const alternate = new URL(otherHref, Astro.site);
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#111315" media="(prefers-color-scheme: dark)" />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang={lang} href={canonical} />
+    <link rel="alternate" hreflang={other} href={alternate} />
+    <link rel="icon" href={assetHref('favicon.svg')} type="image/svg+xml" />
+    <script is:inline>
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('motion');
+    </script>
+  </head>
+  <body>
+    <PencilDefs />
+    <a class="skip-link" href="#content">{t.skip}</a>
+    <header class="topbar wrap">
+      <a class="wordmark" href={homeHref(lang)}>{fullName}</a>
+      <nav aria-label={t.nav}>
+        <ul>
+          <li class="nav-section"><a href={`${home}#${t.anchors.software}`}>{t.navSoftware}</a></li>
+          <li class="nav-section"><a href={`${home}#${t.anchors.training}`}>{t.navTraining}</a></li>
+          <li class="nav-section"><a href={`${home}#${t.anchors.papers}`}>{t.navPapers}</a></li>
+          <li>
+            <a class="lang" href={otherHref} hreflang={other} lang={other}>{t.switchTo}</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main id="content">
+      <slot />
+    </main>
+    <footer class="site-foot wrap">
+      <span>{fullName}</span>
+      <a href={otherHref} hreflang={other} lang={other}>{t.switchTo}</a>
+    </footer>
+  </body>
+</html>

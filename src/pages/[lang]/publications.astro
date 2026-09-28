@@ -1,0 +1,82 @@
+---
+import Base from '../../layouts/Base.astro';
+import Sketch from '../../components/Sketch.astro';
+import { homeHref, langs, otherLang, publicationsHref, ui, type Lang } from '../../i18n';
+import { profile } from '../../data/profile';
+import { publications } from '../../data/publications';
+
+export function getStaticPaths() {
+  return langs.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const t = ui[lang];
+const fullName = `${profile.givenName} ${profile.familyName}`;
+
+const years = [...new Set(publications.map((p) => p.year))];
+const byYear = years.map((year) => ({ year, items: publications.filter((p) => p.year === year) }));
+---
+
+<Base
+  lang={lang}
+  title={`${t.publications}, ${fullName}`}
+  description={`${t.publications}, ${fullName}. ${t.publicationsLead}`}
+  alternate={publicationsHref(otherLang(lang))}
+>
+  <section class="block wrap pubs-page" aria-labelledby="pubs-title">
+    <header class="pubs-head">
+      <span class="disc disc-large">
+        <Sketch subject="stack" />
+      </span>
+      <div class="block-head">
+        <h1 id="pubs-title">{t.publications}</h1>
+        <p>{t.publicationsLead}</p>
+        <p class="pubs-meta">
+          {t.publicationsCount(publications.length)} · {t.publicationsSource}
+          <a href={profile.scholar}>{t.scholarProfile}</a>
+        </p>
+      </div>
+    </header>
+
+    <ol class="years">
+      {
+        byYear.map(({ year, items }) => (
+          <li class="year">
+            <h2 class="year-label">{year}</h2>
+            <ol class="pubs">
+              {items.map((p) => (
+                <li class="pub" lang="en">
+                  <h3 class="pub-title">
+                    {p.doi ? <a href={p.doi}>{p.title}</a> : p.open ? <a href={p.open}>{p.title}</a> : p.title}
+                  </h3>
+                  <p class="pub-authors">
+                    {p.authors.map((a, i) => (
+                      <>
+                        {a.self ? <mark>{a.name}</mark> : a.name}
+                        {i < p.authors.length - 1 ? ', ' : ''}
+                      </>
+                    ))}
+                  </p>
+                  <p class="pub-venue" lang={lang}>
+                    <span class="pub-type">{t.types[p.type] ?? p.type}</span>
+                    {p.venue ? <span lang="en">{p.venue}</span> : null}
+                    {p.doi && p.open ? (
+                      <a href={p.open}>
+                        {t.openVersion}
+                        <svg class="out" viewBox="0 0 12 12" aria-hidden="true">
+                          <path d="M3.5 8.5 8.5 3.5M4.5 3.5h4v4" />
+                        </svg>
+                      </a>
+                    ) : null}
+                  </p>
+                </li>
+              ))}
+            </ol>
+          </li>
+        ))
+      }
+    </ol>
+
+    <p class="pubs-back"><a href={`${homeHref(lang)}#${t.anchors.papers}`}>{t.backHome}</a></p>
+  </section>
+</Base>
