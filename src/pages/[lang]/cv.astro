@@ -1,9 +1,10 @@
 ---
 import { Image } from 'astro:assets';
+import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import CvEntries from '../../components/CvEntries.astro';
 import { assetHref, cvHref, langs, otherLang, ui, type Lang } from '../../i18n';
-import { cv, tr, type Honor } from '../../lib/cv';
+import { entries, single } from '../../lib/content';
 import { publications } from '../../data/publications';
 import avatar from '../../assets/loic_small.png';
 
@@ -13,8 +14,22 @@ export function getStaticPaths() {
 
 const lang = Astro.params.lang as Lang;
 const t = ui[lang];
-const h = cv.header;
-const fullName = `${h.firstName} ${h.lastName}`;
+const titles = t.cvSections;
+const h = (await single('profile', lang)).data;
+const fullName = `${h.givenName} ${h.familyName}`;
+const skills = await Promise.all(
+  (await entries('cvSkills', lang)).map(async (s) => ({ title: s.data.title, Content: (await render(s)).Content })),
+);
+const activities = await entries('cvActivities', lang);
+const teaching = await entries('cvTeaching', lang);
+const teachingGroups = [
+  { title: titles.teachingInitial, entries: teaching.filter((e) => e.data.group === 'initial') },
+  { title: titles.teachingContinuing, entries: teaching.filter((e) => e.data.group === 'continuing') },
+];
+const { Content: Hobbies } = await render(await single('cvHobbies', lang));
+const experience = await entries('cvExperience', lang);
+const education = await entries('cvEducation', lang);
+const projects = await entries('cvProjects', lang);
 
 const contacts = [
   { label: h.email, href: `mailto:${h.email}` },
@@ -22,16 +37,15 @@ const contacts = [
   { label: `linkedin.com/in/${h.linkedin}`, href: `https://www.linkedin.com/in/${h.linkedin}` },
   { label: `x.com/${h.x}`, href: `https://x.com/${h.x}` },
 ];
-
 ---
 
-<Base lang={lang} title={`${t.cv}, ${fullName}`} description={`${t.cv}, ${fullName}: ${tr(h.position, lang)}.`} alternate={cvHref(otherLang(lang))}>
+<Base lang={lang} title={`${t.cv}, ${fullName}`} description={`${t.cv}, ${fullName}: ${h.role}.`} alternate={cvHref(otherLang(lang))}>
   <article class="wrap cv">
     <header class="cv-head">
       <Image src={avatar} alt="" width={120} height={121} class="cv-portrait" loading="eager" />
       <div>
         <h1>{fullName}</h1>
-        <p class="role"><mark>{tr(h.position, lang)}</mark></p>
+        <p class="role"><mark>{h.role}</mark></p>
         <ul class="cv-contacts">
           {contacts.map((c) => <li><a href={c.href}>{c.label}</a></li>)}
         </ul>
@@ -48,37 +62,39 @@ const contacts = [
       </p>
     </header>
 
-    <CvEntries id="experience" title={tr(cv.experience.title, lang)} entries={cv.experience.entries} lang={lang} />
+    <CvEntries id="experience" title={titles.experience} entries={experience} />
 
     <section class="cv-section" aria-labelledby="cv-skills">
-      <h2 id="cv-skills">{tr(cv.skills.title, lang)}</h2>
+      <h2 id="cv-skills">{titles.skills}</h2>
       <dl class="cv-skills">
         {
-          cv.skills.entries.map((s) => (
+          skills.map((s) => (
             <div>
-              <dt>{tr(s.type, lang)}</dt>
-              <dd>{tr(s.set, lang)}</dd>
+              <dt>{s.title}</dt>
+              <dd class="prose">
+                <s.Content />
+              </dd>
             </div>
           ))
         }
       </dl>
     </section>
 
-    <CvEntries id="education" title={tr(cv.education.title, lang)} entries={cv.education.entries} lang={lang} />
+    <CvEntries id="education" title={titles.education} entries={education} />
 
-    <CvEntries id="projects" title={tr(cv.projects.title, lang)} entries={cv.projects.entries} lang={lang} />
+    <CvEntries id="projects" title={titles.projects} entries={projects} />
 
     <section class="cv-section" aria-labelledby="cv-activities">
-      <h2 id="cv-activities">{tr(cv.activities.title, lang)}</h2>
+      <h2 id="cv-activities">{titles.activities}</h2>
       <ol class="cv-lines">
         {
-          cv.activities.entries.map((a: Honor) => (
+          activities.map(({ data: a }) => (
             <li class="cv-line">
-              <span class="cv-when">{tr(a.dates, lang)}</span>
+              <span class="cv-when">{a.dates}</span>
               <span>
-                <strong>{tr(a.position, lang)}</strong>, {tr(a.title, lang)}
+                <strong>{a.position}</strong>, {a.url ? <a href={a.url}>{a.title}</a> : a.title}
               </span>
-              <span class="cv-where">{tr(a.location, lang)}</span>
+              <span class="cv-where">{a.location}</span>
             </li>
           ))
         }
@@ -86,19 +102,19 @@ const contacts = [
     </section>
 
     <section class="cv-section" aria-labelledby="cv-teaching">
-      <h2 id="cv-teaching">{tr(cv.teaching.title, lang)}</h2>
+      <h2 id="cv-teaching">{titles.teaching}</h2>
       {
-        cv.teaching.groups.map((g) => (
+        teachingGroups.map((g) => (
           <>
-            <h3 class="cv-group">{tr(g.title, lang)}</h3>
+            <h3 class="cv-group">{g.title}</h3>
             <ol class="cv-lines">
-              {g.entries.map((a) => (
+              {g.entries.map(({ data: a }) => (
                 <li class="cv-line">
-                  <span class="cv-when">{tr(a.dates, lang)}</span>
+                  <span class="cv-when">{a.dates}</span>
                   <span>
-                    <strong>{tr(a.position, lang)}</strong>, {a.url ? <a href={a.url}>{tr(a.title, lang)}</a> : tr(a.title, lang)}
+                    <strong>{a.position}</strong>, {a.url ? <a href={a.url}>{a.title}</a> : a.title}
                   </span>
-                  <span class="cv-where">{tr(a.location, lang)}</span>
+                  <span class="cv-where">{a.location}</span>
                 </li>
               ))}
             </ol>
@@ -108,7 +124,7 @@ const contacts = [
     </section>
 
     <section class="cv-section" aria-labelledby="cv-publications">
-      <h2 id="cv-publications">{tr(cv.publications.title, lang)}</h2>
+      <h2 id="cv-publications">{titles.publications}</h2>
       <ol class="cv-rows">
         {
           publications.map((p) => (
@@ -133,8 +149,10 @@ const contacts = [
     </section>
 
     <section class="cv-section" aria-labelledby="cv-hobbies">
-      <h2 id="cv-hobbies">{tr(cv.hobbies.title, lang)}</h2>
-      <p class="cv-para">{tr(cv.hobbies.text, lang)}</p>
+      <h2 id="cv-hobbies">{titles.hobbies}</h2>
+      <div class="cv-body prose">
+        <Hobbies />
+      </div>
     </section>
   </article>
 </Base>

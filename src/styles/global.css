@@ -91,6 +91,15 @@ h3 {
   margin: 0;
 }
 
+/* A rendered Markdown body: its container sets the type, the blocks inside only get space between them. */
+.prose > * {
+  margin-block: 0;
+}
+
+.prose > * + * {
+  margin-top: 0.55rem;
+}
+
 .wrap {
   width: 100%;
   max-width: calc(var(--wrap) + 2 * var(--gutter));
@@ -811,22 +820,20 @@ a.paper:hover .paper-arrow {
   font-size: 0.95rem;
 }
 
-.cv-para {
-  margin: 0.55rem 0 0;
+.cv-body {
+  margin-top: 0.55rem;
   max-width: 46rem;
 }
 
-.cv-items {
-  margin: 0.55rem 0 0;
+.cv-body ul {
   padding-left: 1.1rem;
-  max-width: 46rem;
 }
 
-.cv-items li + li {
+.cv-body li + li {
   margin-top: 0.25rem;
 }
 
-.cv-items li::marker {
+.cv-body li::marker {
   color: var(--cyan);
 }
 

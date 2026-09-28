@@ -2,7 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import Sketch from '../../components/Sketch.astro';
 import { homeHref, langs, otherLang, publicationsHref, ui, type Lang } from '../../i18n';
-import { profile } from '../../data/profile';
+import { single } from '../../lib/content';
 import { publications } from '../../data/publications';
 
 export function getStaticPaths() {
@@ -11,6 +11,7 @@ export function getStaticPaths() {
 
 const lang = Astro.params.lang as Lang;
 const t = ui[lang];
+const profile = (await single('profile', lang)).data;
 const fullName = `${profile.givenName} ${profile.familyName}`;
 
 const years = [...new Set(publications.map((p) => p.year))];
