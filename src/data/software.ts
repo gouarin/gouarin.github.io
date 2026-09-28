@@ -3,8 +3,8 @@ import type { Localized } from './profile';
 export type Software = {
   id: string;
   name: string;
-  // Verbatim GitHub description; null until the owner supplies one.
-  description: string | null;
+  // English is the verbatim GitHub description; French is its translation.
+  description: Localized | null;
   language: string;
   license: string | null;
   role: Localized;
@@ -18,8 +18,10 @@ export const software: Software[] = [
   {
     id: 'samurai',
     name: 'samurai',
-    description:
-      'Intervals coupled with algebra of set to handle adaptive mesh refinement and operators on it.',
+    description: {
+      en: 'Intervals coupled with algebra of set to handle adaptive mesh refinement and operators on it.',
+      fr: 'Des intervalles couplés à une algèbre d’ensembles pour gérer le raffinement de maillage adaptatif et les opérateurs qui s’y appliquent.',
+    },
     language: 'C++',
     license: 'BSD-3-Clause',
     role: author,
@@ -30,7 +32,10 @@ export const software: Software[] = [
     id: 'scopi',
     name: 'scopi',
     // From the project README; the repository has no GitHub description.
-    description: 'Simulation of Interacting Particle Collections: 2D and 3D particles with contacts and inter-particle forces.',
+    description: {
+      en: 'Simulation of Interacting Particle Collections: 2D and 3D particles with contacts and inter-particle forces.',
+      fr: 'Simulation de collections de particules en interaction : particules 2D et 3D avec contacts et forces entre particules.',
+    },
     language: 'C++',
     license: 'BSD-3-Clause',
     role: author,
@@ -40,7 +45,10 @@ export const software: Software[] = [
   {
     id: 'pylbm',
     name: 'pylbm',
-    description: 'Numerical simulations using flexible Lattice Boltzmann solvers',
+    description: {
+      en: 'Numerical simulations using flexible Lattice Boltzmann solvers',
+      fr: 'Simulations numériques avec des solveurs de Boltzmann sur réseau flexibles',
+    },
     language: 'Python',
     license: null,
     role: author,

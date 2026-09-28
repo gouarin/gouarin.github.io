@@ -67,16 +67,14 @@ const papers = [
           <li class="project">
             <a class="project-link" href={s.repository} tabindex="-1" aria-hidden="true">
               <div class="plate">
-                <Sketch subject={s.id as 'samurai' | 'scopi' | 'pylbm'} label={`${s.name}: ${s.description ?? ''}`} />
+                <Sketch subject={s.id as 'samurai' | 'scopi' | 'pylbm'} label={`${s.name}: ${s.description?.[lang] ?? ''}`} />
               </div>
             </a>
             <h3 id={`${s.id}-name`}>
               <a href={s.repository}>{s.name}</a>
             </h3>
             {s.description ? (
-              <p class="project-desc" lang="en">
-                {s.description}
-              </p>
+              <p class="project-desc">{s.description[lang]}</p>
             ) : null}
             <p class="project-meta">
               {[s.language, s.license, s.role[lang]].filter(Boolean).join(' · ')}
