@@ -1,0 +1,8 @@
+# TeX Live packages needed to build the CV with XeLaTeX (see the deploy workflow).
+# awesome-cv.cls needs fontawesome6, which the Ubuntu texlive packages do not ship.
+latex-bin xetex
+fontspec unicode-math lm-math fontawesome6 accsupp
+tools enumitem ragged2e geometry fancyhdr xcolor iftex xifthen ifmtarg xstring etoolbox setspace
+tcolorbox pgf environ trimspaces tikzfill
+parskip hyperref bookmark needspace
+babel babel-french babel-english hyphen-french

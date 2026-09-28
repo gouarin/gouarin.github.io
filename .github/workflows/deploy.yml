@@ -34,9 +34,9 @@ jobs:
         run: node scripts/fetch-publications.mjs
         continue-on-error: true
       - name: Install XeLaTeX for the CV
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends texlive-xetex texlive-latex-extra texlive-fonts-extra texlive-fonts-recommended texlive-lang-french
+        uses: zauguin/install-texlive@v4
+        with:
+          package_file: cv/texlive-packages.txt
       # Awesome-CV PDFs from src/data/cv.yaml, written to public/cv/ so the build ships them.
       - name: Build the CV PDFs
         run: npm run cv
