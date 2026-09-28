@@ -136,20 +136,39 @@ const gear = (r: ReturnType<typeof rng>, cx: number, cy: number, inner: number, 
   return out;
 };
 
+const tick = (r: ReturnType<typeof rng>, x: number, y: number, s = 1) => [
+  line(r, x, y, x + 4 * s, y + 4.5 * s, 0.15),
+  line(r, x + 4 * s, y + 4.5 * s, x + 11 * s, y - 5 * s, 0.2),
+];
+const curve = (x1: number, y1: number, x2: number, y2: number) => {
+  const m = (x1 + x2) / 2;
+  return `M${x1} ${y1}C${m} ${y1} ${m} ${y2} ${x2} ${y2}`;
+};
+const tag = (r: ReturnType<typeof rng>, x: number, y: number, w: number, h: number) => [
+  line(r, x, y, x + w, y, 0.3),
+  line(r, x + w, y, x + w + h / 2, y + h / 2, 0.2),
+  line(r, x + w + h / 2, y + h / 2, x + w, y + h, 0.2),
+  line(r, x + w, y + h, x, y + h, 0.3),
+  line(r, x, y + h, x, y, 0.2),
+  circle(r, x + w - 2, y + h / 2, 2.4, 0.05),
+];
+
 if (subject === 'devenv') {
-  // Development workflow: a Git history with a feature branch merged back, kept in motion by automation.
-  const r = rng(51);
-  const y = 150;
-  d.strokes.push(line(r, 26, y, 294, y, 1.2));
-  for (const x of [48, 96, 238, 280]) d.strokes.push(circle(r, x, y, 8.5));
-  d.strokes.push(line(r, 104, y - 5, 128, 104, 0.8), line(r, 128, 104, 208, 104, 1), line(r, 208, 104, 231, y - 5, 0.8));
-  for (const x of [148, 190]) {
-    d.hatch.push(disc(x, 104, 9));
-    d.strokes.push(circle(r, x, 104, 9));
+  // GitHub Actions workflow: a push fans out to lint, test and docs jobs, and the release waits for all three.
+  const r = rng(52);
+  d.strokes.push(line(r, 16, 110, 38, 110, 0.4));
+  d.heavy.push(circle(r, 46, 110, 8, 0.05));
+  const ys = [50, 110, 170];
+  for (const yc of ys) {
+    const x = 100, y = yc - 18;
+    d.strokes.push(curve(56, 110, x, yc), ...rect(r, x, y, 78, 36));
+    d.heavy.push(...tick(r, x + 10, yc, 0.95));
+    d.strokes.push(line(r, x + 32, yc - 5, x + 68, yc - 5, 0.3), line(r, x + 32, yc + 5, x + (yc === 110 ? 60 : 54), yc + 5, 0.3));
+    d.strokes.push(curve(180, yc, 222, 110));
   }
-  d.heavy.push(line(r, 225, 128, 232, 136, 0.2), line(r, 232, 136, 246, 118, 0.3));
-  d.strokes.push(...gear(r, 250, 58, 20, 28, 9));
-  d.faint.push(...arrow(r, 222, 66, 190, 92, 6));
+  d.hatch.push('M222 84h74v52h-74Z');
+  d.strokes.push(...rect(r, 222, 84, 74, 52));
+  d.heavy.push(...tag(r, 238, 99, 30, 22));
 }
 
 if (subject === 'packaging') {
