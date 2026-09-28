@@ -1,8 +1,8 @@
 ---
-import { arrow, circle, line, rng } from '../lib/sketch';
+import { arrow, circle, line, rng, type PlateSketch } from '../lib/sketch';
 
 interface Props {
-  subject: 'samurai' | 'scopi' | 'pylbm' | 'devenv' | 'packaging' | 'harness' | 'board' | 'sheet' | 'stack';
+  subject: PlateSketch | 'board' | 'sheet' | 'stack';
   label?: string;
 }
 

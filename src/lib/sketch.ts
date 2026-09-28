@@ -1,5 +1,9 @@
 // Hand-drawn line helpers: deterministic jitter so every build draws the same sketch.
 
+// The large drawings shown above a software or training card, picked by the `sketch` field of its Markdown file.
+export const plateSketches = ['samurai', 'scopi', 'pylbm', 'devenv', 'packaging', 'harness'] as const;
+export type PlateSketch = (typeof plateSketches)[number];
+
 export function rng(seed: number) {
   let s = seed >>> 0;
   return () => {

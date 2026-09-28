@@ -2,8 +2,9 @@
 import '@fontsource-variable/bricolage-grotesque/standard.css';
 import '../styles/global.css';
 import { assetHref, homeHref } from '../i18n';
-import { profile } from '../data/profile';
+import { single } from '../lib/content';
 
+const profile = (await single('profile', 'fr')).data;
 const fullName = `${profile.givenName} ${profile.familyName}`;
 const fr = homeHref('fr');
 const en = homeHref('en');

@@ -1,11 +1,10 @@
 ---
 import { Image } from 'astro:assets';
+import { render, type CollectionEntry } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Sketch from '../../components/Sketch.astro';
 import { cvHref, langs, publicationsHref, ui, type Lang } from '../../i18n';
-import { profile } from '../../data/profile';
-import { software } from '../../data/software';
-import { training } from '../../data/training';
+import { entries, inlineHtml, nameOf, plain, single } from '../../lib/content';
 import { publications } from '../../data/publications';
 import avatar from '../../assets/loic_small.png';
 
@@ -15,10 +14,17 @@ export function getStaticPaths() {
 
 const lang = Astro.params.lang as Lang;
 const t = ui[lang];
+const profileEntry = await single('profile', lang);
+const profile = profileEntry.data;
+const { Content: Intro } = await render(profileEntry);
 const fullName = `${profile.givenName} ${profile.familyName}`;
-const linkedName = new RegExp(`\\b(${Object.keys(profile.linkedNames).join('|')})\\b`);
-const withLinks = (text: string) => text.split(linkedName);
-const description = `${fullName}, ${profile.role[lang]}. ${profile.intro[lang]}`;
+const description = `${fullName}, ${profile.role}. ${plain(profileEntry.body ?? '')}`;
+
+// Each card keeps its Markdown body both rendered and as plain text for the drawing's label.
+const withBody = <E extends CollectionEntry<'software' | 'training'>>(list: E[]) =>
+  Promise.all(list.map(async (e) => ({ ...e, text: plain(e.body ?? ''), Content: (await render(e)).Content })));
+const software = await withBody(await entries('software', lang));
+const training = await withBody(await entries('training', lang));
 
 const papers = [
   { id: 'cv', title: t.cv, note: t.cvNote, href: cvHref(lang), sketch: 'sheet' as const },
@@ -42,15 +48,11 @@ const papers = [
         <span>{profile.givenName}</span>
         <span>{profile.familyName}</span>
       </h1>
-      <p class="role"><mark>{profile.role[lang]}</mark></p>
-      <p class="affiliation">
-        {withLinks(profile.affiliation[lang]).map((part, i) => (i % 2 ? <a href={profile.linkedNames[part]}>{part}</a> : part))}
-      </p>
-      <p class="lead">
-        {withLinks(profile.intro[lang]).map((part, i) => (i % 2 ? <a href={profile.linkedNames[part]}>{part}</a> : part))}
-      </p>
+      <p class="role"><mark>{profile.role}</mark></p>
+      <p class="affiliation" set:html={inlineHtml(profile.affiliation)} />
+      <div class="lead prose"><Intro /></div>
       <ul class="elsewhere">
-        {profile.email ? <li><a href={`mailto:${profile.email}`}>{profile.email}</a></li> : null}
+        <li><a href={`mailto:${profile.email}`}>{profile.email}</a></li>
         {
           profile.links.map((l) => (
             <li>
@@ -69,21 +71,21 @@ const papers = [
     </header>
     <ul class="projects">
       {
-        software.map((s) => (
+        software.map(({ data: s, text, Content, ...entry }) => (
           <li class="project">
             <a class="project-link" href={s.repository} tabindex="-1" aria-hidden="true">
               <div class="plate">
-                <Sketch subject={s.id as 'samurai' | 'scopi' | 'pylbm'} label={`${s.name}: ${s.description?.[lang] ?? ''}`} />
+                <Sketch subject={s.sketch} label={`${s.name}: ${text}`} />
               </div>
             </a>
-            <h3 id={`${s.id}-name`}>
+            <h3 id={`${nameOf(entry)}-name`}>
               <a href={s.repository}>{s.name}</a>
             </h3>
-            {s.description ? (
-              <p class="project-desc">{s.description[lang]}</p>
+            {text ? (
+              <div class="project-desc prose"><Content /></div>
             ) : null}
             <p class="project-meta">
-              {[s.language, s.license, s.role[lang]].filter(Boolean).join(' · ')}
+              {[s.language, s.license, s.role].filter(Boolean).join(' · ')}
             </p>
             <p class="project-links">
               <a href={s.repository}>
@@ -115,7 +117,7 @@ const papers = [
     {
       training.length ? (
         <ul class="projects">
-          {training.map((c) => (
+          {training.map(({ data: c, Content }) => (
             <li class="project">
               <a class="project-link" href={c.materials} tabindex="-1" aria-hidden="true">
                 <div class="plate">
@@ -123,10 +125,10 @@ const papers = [
                 </div>
               </a>
               <h3>
-                <a href={c.materials}>{c.title[lang]}</a>
+                <a href={c.materials}>{c.title}</a>
               </h3>
-              <p class="project-desc">{c.summary[lang]}</p>
-              <p class="project-meta">{c.languages[lang]}</p>
+              <div class="project-desc prose"><Content /></div>
+              <p class="project-meta">{c.languages}</p>
               <p class="project-links">
                 <a href={c.materials}>
                   {t.materials}
