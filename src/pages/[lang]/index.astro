@@ -16,6 +16,8 @@ export function getStaticPaths() {
 const lang = Astro.params.lang as Lang;
 const t = ui[lang];
 const fullName = `${profile.givenName} ${profile.familyName}`;
+const linkedName = new RegExp(`\\b(${Object.keys(profile.linkedNames).join('|')})\\b`);
+const withLinks = (text: string) => text.split(linkedName);
 const description = `${fullName}, ${profile.role[lang]}. ${profile.intro[lang]}`;
 
 const papers = [
@@ -41,8 +43,12 @@ const papers = [
         <span>{profile.familyName}</span>
       </h1>
       <p class="role"><mark>{profile.role[lang]}</mark></p>
-      <p class="affiliation">{profile.affiliation[lang]}</p>
-      <p class="lead">{profile.intro[lang]}</p>
+      <p class="affiliation">
+        {withLinks(profile.affiliation[lang]).map((part, i) => (i % 2 ? <a href={profile.linkedNames[part]}>{part}</a> : part))}
+      </p>
+      <p class="lead">
+        {withLinks(profile.intro[lang]).map((part, i) => (i % 2 ? <a href={profile.linkedNames[part]}>{part}</a> : part))}
+      </p>
       <ul class="elsewhere">
         {profile.email ? <li><a href={`mailto:${profile.email}`}>{profile.email}</a></li> : null}
         {
