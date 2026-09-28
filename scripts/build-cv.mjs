@@ -161,13 +161,22 @@ if (process.argv.includes('--pdf')) {
   await mkdir(publicDir, { recursive: true });
   for (const lang of LANGS) {
     // Two passes so page references and the footer settle.
-    for (let pass = 0; pass < 2; pass++)
-      execFileSync('xelatex', ['-interaction=nonstopmode', '-halt-on-error', `cv-${lang}.tex`], {
-        cwd: buildDir,
-        // The vendored Source Sans 3 and Roboto fonts live in cv/fonts, registered by cv/fonts.conf.
-        env: { ...process.env, FONTCONFIG_FILE: fileURLToPath(new URL('cv/fonts.conf', root)) },
-        stdio: pass ? 'ignore' : ['ignore', 'ignore', 'inherit'],
-      });
+    for (let pass = 0; pass < 2; pass++) {
+      try {
+        execFileSync('xelatex', ['-interaction=nonstopmode', '-halt-on-error', `cv-${lang}.tex`], {
+          cwd: buildDir,
+          // The vendored Source Sans 3 and Roboto fonts live in cv/fonts, registered by cv/fonts.conf.
+          env: { ...process.env, FONTCONFIG_FILE: fileURLToPath(new URL('cv/fonts.conf', root)) },
+          stdio: 'ignore',
+        });
+      } catch {
+        // XeLaTeX reports errors in its log, not on stderr: show the first one.
+        const log = await readFile(new URL(`cv-${lang}.log`, buildDir), 'utf8');
+        const at = log.indexOf('\n!');
+        console.error(at >= 0 ? log.slice(at, at + 1200) : log.slice(-1200));
+        throw new Error(`xelatex failed on cv-${lang}.tex`);
+      }
+    }
     await copyFile(new URL(`cv-${lang}.pdf`, buildDir), new URL(`loic-gouarin-cv-${lang}.pdf`, publicDir));
     console.log(`public/cv/loic-gouarin-cv-${lang}.pdf`);
   }
